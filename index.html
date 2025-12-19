@@ -7,25 +7,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* 高级配色方案 */
-            --primary: #667eea;
+            /* 高级配色方案 - 优化色彩饱和度 */
+            --primary: #6d7aea;
             --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --accent: #f093fb;
+            --secondary: #7c5aa0;
+            --accent: #ec8bf7;
             --accent-secondary: #f5576c;
             --dark: #1a1a2e;
             --darker: #16213e;
             --darkest: #0f172a;
             --light: #f8fafc;
             --lighter: #e2e8f0;
-            --text: #2d3748;
-            --text-light: #718096;
-            --text-muted: #a0aec0;
+            --text: #e2e8f0;
+            --text-light: #a0aec0;
+            --text-muted: #718096;
             --white: #ffffff;
-            --success: #48bb78;
-            --warning: #ed8936;
-            --danger: #f56565;
-            --info: #4299e1;
+            --success: #4ade80;
+            --warning: #f59e0b;
+            --danger: #f87171;
+            --info: #60a5fa;
             
             /* 作业科目颜色 */
             --subject-chinese: #e53e3e;
@@ -36,10 +36,10 @@
             --subject-politics: #dd6b20;
             --subject-other: #718096;
             
-            /* 动画变量 */
-            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            /* 动画变量 - 优化缓动曲线 */
+            --transition-fast: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-normal: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-slow: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             
             /* 阴影和圆角 */
@@ -71,7 +71,7 @@
         
         html { 
             scroll-behavior: smooth; 
-            scroll-padding-top: 80px;
+            scroll-padding-top: 70px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -89,7 +89,7 @@
             min-height: 100vh;
         }
 
-        /* 背景动画效果 */
+        /* 背景动画效果 - 更细腻的渐变 */
         body::before {
             content: '';
             position: fixed;
@@ -98,16 +98,16 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(240, 147, 251, 0.05) 0%, transparent 50%);
-            animation: backgroundShift 20s ease-in-out infinite;
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(240, 147, 251, 0.04) 0%, transparent 50%);
+            animation: backgroundShift 25s ease-in-out infinite;
             z-index: -1;
         }
 
         @keyframes backgroundShift {
             0%, 100% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(5deg) scale(1.1); }
+            50% { transform: rotate(3deg) scale(1.05); }
         }
 
         /* 加载动画 - 已验证安全页面的样式 */
@@ -204,15 +204,15 @@
             100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* 导航栏 */
+        /* 导航栏 - 优化玻璃拟态效果 */
         .navbar {
             position: fixed; 
             top: 0; 
             width: 100%;
-            background: rgba(26, 26, 46, 0.85);
+            background: rgba(26, 26, 46, 0.8);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 1000; 
             transition: var(--transition-normal);
             transform: translateY(0);
@@ -243,7 +243,7 @@
         
         .logo:hover {
             transform: scale(1.05);
-            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+            filter: drop-shadow(0 0 15px rgba(102, 126, 234, 0.4));
         }
         
         .nav-menu {
@@ -350,8 +350,8 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(240, 147, 251, 0.2) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(240, 147, 251, 0.15) 0%, transparent 50%);
             animation: heroPulse 8s ease-in-out infinite;
         }
         
@@ -361,8 +361,8 @@
                 transform: scale(1);
             }
             50% { 
-                opacity: 0.7; 
-                transform: scale(1.05);
+                opacity: 0.6; 
+                transform: scale(1.02);
             }
         }
 
@@ -429,10 +429,10 @@
 
         /* UA信息显示 - 居中样式 */
         .ua-display {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: var(--border-radius);
             padding: var(--spacing-sm) var(--spacing-md);
             margin-top: 1rem;
@@ -451,7 +451,7 @@
         }
 
         .ua-display:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             transform: translateY(-2px);
             box-shadow: var(--shadow-glow);
         }
@@ -459,6 +459,70 @@
         .ua-icon {
             font-size: 1.2rem;
             color: var(--accent);
+        }
+
+        /* ===== STNStudio 发光UI - 新增功能 ===== */
+        .stn-studio-display {
+            position: relative;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-weight: 700;
+            color: var(--white);
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.9s both, stnGlow 3s ease-in-out infinite;
+            transition: var(--transition-normal);
+            overflow: hidden;
+        }
+
+        .stn-studio-display::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 120%;
+            transform: translate(-50%, -50%);
+            background: conic-gradient(from 0deg, transparent, rgba(102, 126, 234, 0.3), rgba(240, 147, 251, 0.3), transparent);
+            animation: stnRotate 4s linear infinite;
+            z-index: -1;
+            border-radius: 50px;
+        }
+
+        .stn-studio-display::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: var(--dark);
+            border-radius: 48px;
+            z-index: -1;
+        }
+
+        @keyframes stnRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes stnGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.6), 0 0 40px rgba(240, 147, 251, 0.3);
+            }
+        }
+
+        .stn-studio-display:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
 
         /* 内容区域 - 修复布局问题 */
@@ -492,7 +556,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
             transition: var(--transition-slow);
         }
 
@@ -570,7 +634,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
             transition: var(--transition-slow);
         }
 
@@ -919,6 +983,11 @@
                 font-size: clamp(0.8rem, 2vw, 0.95rem);
             }
 
+            .stn-studio-display {
+                padding: 0.8rem 1.5rem;
+                font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+            }
+
             .homework-card {
                 min-height: 160px;
                 padding: var(--spacing-md);
@@ -968,6 +1037,144 @@
         .ua-ios { color: var(--success); }
         .ua-android { color: var(--warning); }
         .ua-mobile { color: var(--accent); }
+
+        /* 音乐播放按钮样式 - 高级风格 */
+        .music-player {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            z-index: 999;
+            opacity: 0;
+            transform: scale(0);
+            transition: var(--transition-bounce);
+        }
+
+        .music-player.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .music-button {
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-bounce);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-button:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .music-button:active {
+            transform: scale(0.95);
+        }
+
+        .music-button.playing {
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { 
+                box-shadow: var(--shadow-lg), 0 0 0 0 rgba(102, 126, 234, 0.4);
+            }
+            50% { 
+                box-shadow: var(--shadow-xl), 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+        }
+
+        .music-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: var(--transition-normal);
+            z-index: -1;
+        }
+
+        .music-button:hover::before {
+            opacity: 0.3;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .music-player {
+                bottom: var(--spacing-md);
+                right: var(--spacing-md);
+            }
+            
+            .music-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .music-player {
+                bottom: var(--spacing-sm);
+                right: var(--spacing-sm);
+            }
+        }
+
+        /* 修复页面显示问题的关键样式 */
+        .page-content {
+            padding-top: 70px; /* 导航栏高度补偿 */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 修复公告页面显示 */
+        .announcement-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 300px);
+            padding: var(--spacing-lg) 0;
+        }
+
+        /* 修复作业页面显示 */
+        .homework-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-lg) 0;
+        }
+
+        /* 添加交错动画类 */
+        .stagger-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: staggerFadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes staggerFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1001,111 +1208,133 @@
         </div>
     </nav>
 
-    <!-- 首页 -->
-    <div class="page active" data-page="home" id="page-home">
-        <section class="hero">
-            <div class="hero-content">
-                <h1>GLcn 信息平台</h1>
-                <div id="beijingTime"></div>
-                <div class="time-date" id="beijingDate"></div>
-                <div class="ua-display" id="uaDisplay">
-                    <i class="fas fa-device ua-icon" id="uaIcon"></i>
-                    <span id="uaText">当前访问UA：检测中...</span>
+    <div class="page-content">
+        <!-- 首页 -->
+        <div class="page active" data-page="home" id="page-home">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>GLcn 信息平台</h1>
+                    <div id="beijingTime"></div>
+                    <div class="time-date" id="beijingDate"></div>
+                    <div class="ua-display" id="uaDisplay">
+                        <i class="fas fa-device ua-icon" id="uaIcon"></i>
+                        <span id="uaText">当前访问UA：检测中...</span>
+                    </div>
+                    <!-- STNStudio 发光UI -->
+                    <div class="stn-studio-display">
+                        <i class="fas fa-star"></i> STNStudio
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 公告页 -->
+        <div class="page" data-page="announcement" id="page-announcement">
+            <div class="announcement-content">
+                <div class="content-section">
+                    <div class="feature-card stagger-fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h3 class="feature-title">公告</h3>
+                        <p class="feature-description">哈基米持续更新中……</p>
+                    </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
 
-    <!-- 公告页 -->
-    <div class="page" data-page="announcement" id="page-announcement">
-        <div class="content-section">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-bullhorn"></i>
+        <!-- 作业页 -->
+        <div class="page" data-page="homework" id="page-homework">
+            <div class="homework-content">
+                <div class="homework-container">
+                    <div class="feature-card stagger-fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3 class="feature-title">作业列表</h3>
+                        <p class="feature-description">点击以下科目查看详细作业内容</p>
+                    </div>
+                    
+                    <div class="homework-grid">
+                        <div class="homework-card chinese stagger-fade-in" data-subject="chinese">
+                            <div class="homework-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h4 class="homework-title">语文作业</h4>
+                            <p class="homework-subtitle">观后感</p>
+                            <span class="homework-status pending">12月19日</span>
+                        </div>
+
+                        <div class="homework-card math stagger-fade-in" data-subject="math">
+                            <div class="homework-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h4 class="homework-title">数学作业</h4>
+                            <p class="homework-subtitle">未更新</p>
+                            <span class="homework-status pending">未更新</span>
+                        </div>
+
+                        <div class="homework-card english stagger-fade-in" data-subject="english">
+                            <div class="homework-icon">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <h4 class="homework-title">英语作业</h4>
+                            <p class="homework-subtitle">未更新</p>
+                            <span class="homework-status completed">未更新</span>
+                        </div>
+
+                        <div class="homework-card physics stagger-fade-in" data-subject="physics">
+                            <div class="homework-icon">
+                                <i class="fas fa-atom"></i>
+                            </div>
+                            <h4 class="homework-title">物理作业</h4>
+                            <p class="homework-subtitle">解答相关问题</p>
+                            <span class="homework-status pending">持续更新</span>
+                        </div>
+
+                        <div class="homework-card chemistry stagger-fade-in" data-subject="chemistry">
+                            <div class="homework-icon">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <h4 class="homework-title">化学作业</h4>
+                            <p class="homework-subtitle">已刷新</p>
+                            <span class="homework-status pending">12月19日</span>
+                        </div>
+
+                        <div class="homework-card politics stagger-fade-in" data-subject="politics">
+                            <div class="homework-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <h4 class="homework-title">政治作业</h4>
+                            <p class="homework-subtitle">小本12课</p>
+                            <span class="homework-status pending">12月19日</span>
+                        </div>
+
+                        <div class="homework-card other stagger-fade-in" data-subject="other">
+                            <div class="homework-icon">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                            <h4 class="homework-title">其他作业</h4>
+                            <p class="homework-subtitle">暂无</p>
+                            <span class="homework-status completed">暂无</span>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="feature-title">公告</h3>
-                <p class="feature-description">哈基米持续更新中……</p>
             </div>
         </div>
     </div>
 
-    <!-- 作业页 -->
-    <div class="page" data-page="homework" id="page-homework">
-        <div class="homework-container">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-tasks"></i>
-                </div>
-                <h3 class="feature-title">作业列表</h3>
-                <p class="feature-description">点击以下科目查看详细作业内容</p>
-            </div>
-            
-            <div class="homework-grid">
-                <div class="homework-card chinese" data-subject="chinese">
-                    <div class="homework-icon">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h4 class="homework-title">语文作业</h4>
-                    <p class="homework-subtitle">观后感</p>
-                    <span class="homework-status pending">12月19日</span>
-                </div>
-
-                <div class="homework-card math" data-subject="math">
-                    <div class="homework-icon">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <h4 class="homework-title">数学作业</h4>
-                    <p class="homework-subtitle">未更新</p>
-                    <span class="homework-status pending">未更新</span>
-                </div>
-
-                <div class="homework-card english" data-subject="english">
-                    <div class="homework-icon">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <h4 class="homework-title">英语作业</h4>
-                    <p class="homework-subtitle">未更新</p>
-                    <span class="homework-status completed">未更新</span>
-                </div>
-
-                <div class="homework-card physics" data-subject="physics">
-                    <div class="homework-icon">
-                        <i class="fas fa-atom"></i>
-                    </div>
-                    <h4 class="homework-title">物理作业</h4>
-                    <p class="homework-subtitle">解答相关问题</p>
-                    <span class="homework-status pending">持续更新</span>
-                </div>
-
-                <div class="homework-card chemistry" data-subject="chemistry">
-                    <div class="homework-icon">
-                        <i class="fas fa-flask"></i>
-                    </div>
-                    <h4 class="homework-title">化学作业</h4>
-                    <p class="homework-subtitle">已刷新</p>
-                    <span class="homework-status pending">12月19日</span>
-                </div>
-
-                <div class="homework-card politics" data-subject="politics">
-                    <div class="homework-icon">
-                        <i class="fas fa-landmark"></i>
-                    </div>
-                    <h4 class="homework-title">政治作业</h4>
-                    <p class="homework-subtitle">小本12课</p>
-                    <span class="homework-status pending">12月19日</span>
-                </div>
-
-                <div class="homework-card other" data-subject="other">
-                    <div class="homework-icon">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                    <h4 class="homework-title">其他作业</h4>
-                    <p class="homework-subtitle">暂无</p>
-                    <span class="homework-status completed">暂无</span>
-                </div>
-            </div>
-        </div>
+    <!-- 音乐播放器 - 高级风格按钮 -->
+    <div class="music-player" id="musicPlayer">
+        <button class="music-button" id="musicButton" aria-label="播放/暂停音乐">
+            <i class="fas fa-play" id="musicIcon"></i>
+        </button>
     </div>
+
+    <!-- 音乐音频元素 -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- 作业详情弹窗 -->
     <div class="modal-overlay" id="homeworkModal">
@@ -1308,6 +1537,7 @@
             setupMobileMenu();
             setupHomeworkCards();
             setupModal();
+            setupMusicPlayer();
             hideLoading();
             updateBeijingTime();
             setInterval(updateBeijingTime, 1000);
@@ -1346,6 +1576,11 @@
                         targetPage.classList.add('active');
                         // 滚动到顶部
                         window.scrollTo({ top: 0, behavior: 'smooth' });
+                        
+                        // 重新应用交错动画
+                        setTimeout(() => {
+                            applyStaggerAnimation();
+                        }, 100);
                     }, 10);
                 }
             }, 250);
@@ -1479,8 +1714,41 @@
                 loading.classList.add('hide');
                 setTimeout(() => {
                     loading.style.display = 'none';
+                    // 显示音乐播放器
+                    document.getElementById('musicPlayer').classList.add('show');
                 }, 500);
             }, 800);
+        }
+
+        // ===== 音乐播放器功能 =====
+        function setupMusicPlayer() {
+            const musicButton = document.getElementById('musicButton');
+            const musicIcon = document.getElementById('musicIcon');
+            const bgMusic = document.getElementById('bgMusic');
+            
+            let isPlaying = false;
+            
+            musicButton.addEventListener('click', () => {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicIcon.className = 'fas fa-play';
+                    musicButton.classList.remove('playing');
+                } else {
+                    bgMusic.play().catch(e => {
+                        console.log('音乐播放失败:', e);
+                    });
+                    musicIcon.className = 'fas fa-pause';
+                    musicButton.classList.add('playing');
+                }
+                isPlaying = !isPlaying;
+            });
+            
+            // 音乐播放结束
+            bgMusic.addEventListener('ended', () => {
+                musicIcon.className = 'fas fa-play';
+                musicButton.classList.remove('playing');
+                isPlaying = false;
+            });
         }
 
         // ===== 北京时间显示 =====
@@ -1530,7 +1798,13 @@
         // ===== 动画设置 =====
         function setupAnimations() {
             // 为功能卡片添加交错动画
-            const cards = document.querySelectorAll('.feature-card, .homework-card');
+            setTimeout(() => {
+                applyStaggerAnimation();
+            }, 1000);
+        }
+
+        function applyStaggerAnimation() {
+            const cards = document.querySelectorAll('.stagger-fade-in');
             cards.forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
                 card.classList.add('fadeInUp');
