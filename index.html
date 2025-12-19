@@ -25,6 +25,16 @@
             --success: #48bb78;
             --warning: #ed8936;
             --danger: #f56565;
+            --info: #4299e1;
+            
+            /* 作业科目颜色 */
+            --subject-chinese: #e53e3e;
+            --subject-math: #3182ce;
+            --subject-english: #38a169;
+            --subject-physics: #d69e2e;
+            --subject-chemistry: #805ad5;
+            --subject-politics: #dd6b20;
+            --subject-other: #718096;
             
             /* 动画变量 */
             --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -36,6 +46,7 @@
             --border-radius: 16px;
             --border-radius-sm: 8px;
             --border-radius-lg: 24px;
+            --border-radius-xl: 32px;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
             --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -73,6 +84,9 @@
             overflow-x: hidden;
             font-size: clamp(0.95rem, 4vw, 1.05rem);
             transition: var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* 背景动画效果 */
@@ -256,11 +270,10 @@
             transform: scale(1.05);
         }
 
-        /* 页面容器 */
+        /* 页面容器 - 修复布局问题 */
         .page {
             display: none; 
-            min-height: calc(100vh - 70px);
-            margin-top: 70px; 
+            flex: 1;
             padding: var(--spacing-md);
             opacity: 0;
             transform: translateY(20px);
@@ -287,13 +300,9 @@
             position: relative; 
             overflow: hidden;
             border-radius: var(--border-radius-lg);
-            margin: var(--spacing-sm) 0;
+            margin: var(--spacing-sm) auto;
             box-shadow: var(--shadow-xl);
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
+            max-width: 1200px;
         }
         
         .hero::before {
@@ -407,7 +416,15 @@
             color: var(--accent);
         }
 
-        /* 功能卡片 - 优化间距 */
+        /* 内容区域 - 修复布局问题 */
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-lg) 0;
+            min-height: calc(100vh - 400px);
+        }
+
+        /* 功能卡片 - 公告页面 */
         .feature-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -419,12 +436,8 @@
             transition: var(--transition-bounce);
             position: relative;
             overflow: hidden;
-            margin: var(--spacing-md) 0;
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            margin: var(--spacing-md) auto;
+            max-width: 800px;
         }
 
         .feature-card::before {
@@ -472,18 +485,262 @@
             line-height: 1.6;
         }
 
-        /* 内容区域 - 优化后的样式 */
-        .content-section {
+        /* 作业页面 - 全新设计 */
+        .homework-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: var(--spacing-lg) 0;
-            min-height: calc(100vh - 400px);
+        }
+
+        .homework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .homework-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+            transition: var(--transition-bounce);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        /* 页脚 - 优化位置 */
+        .homework-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: var(--transition-slow);
+        }
+
+        .homework-card:hover::before {
+            left: 100%;
+        }
+
+        .homework-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+        }
+
+        .homework-card.chinese { border-left: 4px solid var(--subject-chinese); }
+        .homework-card.math { border-left: 4px solid var(--subject-math); }
+        .homework-card.english { border-left: 4px solid var(--subject-english); }
+        .homework-card.physics { border-left: 4px solid var(--subject-physics); }
+        .homework-card.chemistry { border-left: 4px solid var(--subject-chemistry); }
+        .homework-card.politics { border-left: 4px solid var(--subject-politics); }
+        .homework-card.other { border-left: 4px solid var(--subject-other); }
+
+        .homework-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+            transition: var(--transition-bounce);
+        }
+
+        .homework-card:hover .homework-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .homework-card.chinese .homework-icon { color: var(--subject-chinese); }
+        .homework-card.math .homework-icon { color: var(--subject-math); }
+        .homework-card.english .homework-icon { color: var(--subject-english); }
+        .homework-card.physics .homework-icon { color: var(--subject-physics); }
+        .homework-card.chemistry .homework-icon { color: var(--subject-chemistry); }
+        .homework-card.politics .homework-icon { color: var(--subject-politics); }
+        .homework-card.other .homework-icon { color: var(--subject-other); }
+
+        .homework-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            color: var(--white);
+        }
+
+        .homework-subtitle {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .homework-status {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .homework-status.pending {
+            background: rgba(237, 137, 54, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(237, 137, 54, 0.3);
+        }
+
+        .homework-status.completed {
+            background: rgba(72, 187, 120, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+        }
+
+        /* 弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-normal);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.8) translateY(50px);
+            transition: var(--transition-bounce);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition-normal);
+        }
+
+        .modal-close:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .modal-body h4 {
+            color: var(--white);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.1rem;
+        }
+
+        .modal-body p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .modal-body .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+        }
+
+        .modal-body .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            border-left: 3px solid var(--primary);
+        }
+
+        .modal-body .info-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-body .info-value {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .modal-footer {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .modal-button {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .modal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* 页脚 - 修复位置 */
         footer {
             background: var(--darkest); 
             color: rgba(255, 255, 255, 0.8);
@@ -565,24 +822,32 @@
             }
 
             .hero {
-                margin: var(--spacing-xs) 0;
+                margin: var(--spacing-xs) auto;
                 padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 1.5rem);
-                min-height: 350px;
             }
 
             #beijingTime {
                 font-size: clamp(1.8rem, 6vw, 2.5rem);
             }
 
-            .feature-card {
-                padding: var(--spacing-lg);
-                margin: var(--spacing-sm) 0;
-                min-height: 250px;
+            .homework-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
             }
 
-            .content-section {
-                padding: var(--spacing-md) 0;
-                min-height: calc(100vh - 350px);
+            .homework-card {
+                min-height: 180px;
+                padding: var(--spacing-lg);
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: var(--spacing-lg);
+                margin: var(--spacing-md);
+            }
+
+            .modal-body .info-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -594,7 +859,6 @@
 
             .hero {
                 padding: clamp(1.2rem, 4vw, 2.5rem) clamp(0.5rem, 3vw, 1rem);
-                min-height: 320px;
             }
 
             #beijingTime {
@@ -610,8 +874,17 @@
                 font-size: clamp(0.8rem, 2vw, 0.95rem);
             }
 
-            .content-section {
-                min-height: calc(100vh - 320px);
+            .homework-card {
+                min-height: 160px;
+                padding: var(--spacing-md);
+            }
+
+            .homework-icon {
+                font-size: 2.5rem;
+            }
+
+            .homework-title {
+                font-size: 1.1rem;
             }
         }
 
@@ -644,13 +917,6 @@
             outline: 2px solid var(--primary);
             outline-offset: 2px;
         }
-
-        /* 动画延迟类 */
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
 
         /* 设备图标颜色 */
         .ua-pc { color: var(--primary); }
@@ -700,7 +966,7 @@
 
     <!-- 公告页 -->
     <div class="page" data-page="announcement" id="page-announcement">
-        <section class="content-section">
+        <div class="content-section">
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="fas fa-bullhorn"></i>
@@ -708,20 +974,106 @@
                 <h3 class="feature-title">暂无新公告</h3>
                 <p class="feature-description">请稍后查看，我们会及时更新最新信息</p>
             </div>
-        </section>
+        </div>
     </div>
 
     <!-- 作业页 -->
     <div class="page" data-page="homework" id="page-homework">
-        <section class="content-section">
+        <div class="homework-container">
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="fas fa-tasks"></i>
                 </div>
-                <h3 class="feature-title">暂无作业</h3>
-                <p class="feature-description">请等待发布，保持关注最新动态</p>
+                <h3 class="feature-title">作业列表</h3>
+                <p class="feature-description">点击以下科目查看详细作业内容</p>
             </div>
-        </section>
+            
+            <div class="homework-grid">
+                <div class="homework-card chinese" data-subject="chinese">
+                    <div class="homework-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h4 class="homework-title">语文作业</h4>
+                    <p class="homework-subtitle">未更新</p>
+                    <span class="homework-status pending">未更新</span>
+                </div>
+
+                <div class="homework-card math" data-subject="math">
+                    <div class="homework-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h4 class="homework-title">数学作业</h4>
+                    <p class="homework-subtitle">未更新</p>
+                    <span class="homework-status pending">未更新</span>
+                </div>
+
+                <div class="homework-card english" data-subject="english">
+                    <div class="homework-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h4 class="homework-title">英语作业</h4>
+                    <p class="homework-subtitle">未更新</p>
+                    <span class="homework-status completed">未更新</span>
+                </div>
+
+                <div class="homework-card physics" data-subject="physics">
+                    <div class="homework-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h4 class="homework-title">物理作业</h4>
+                    <p class="homework-subtitle">搜索相关问题</p>
+                    <span class="homework-status pending">12月19日</span>
+                </div>
+
+                <div class="homework-card chemistry" data-subject="chemistry">
+                    <div class="homework-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h4 class="homework-title">化学作业</h4>
+                    <p class="homework-subtitle">待刷新</p>
+                    <span class="homework-status pending">12月19日</span>
+                </div>
+
+                <div class="homework-card politics" data-subject="politics">
+                    <div class="homework-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h4 class="homework-title">政治作业</h4>
+                    <p class="homework-subtitle">小本12课</p>
+                    <span class="homework-status pending">未知</span>
+                </div>
+
+                <div class="homework-card other" data-subject="other">
+                    <div class="homework-icon">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                    <h4 class="homework-title">其他作业</h4>
+                    <p class="homework-subtitle">暂无</p>
+                    <span class="homework-status completed">暂无</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 作业详情弹窗 -->
+    <div class="modal-overlay" id="homeworkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">
+                    <i class="fas fa-book"></i>
+                    <span id="modalSubject">作业详情</span>
+                </h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 动态内容 -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-button" id="modalButton">知道了</button>
+            </div>
+        </div>
     </div>
 
     <!-- 页脚 -->
@@ -782,16 +1134,134 @@
             uaDisplay.style.animation = 'fadeInUp 0.8s ease-out 1s both';
         }
 
+        // ===== 作业数据 =====
+        const homeworkData = {
+            chinese: {
+                title: '语文作业',
+                icon: 'fas fa-book',
+                color: '#e53e3e',
+                content: {
+                    subject: '语文',
+                    teacher: '庄老师',
+                    deadline: '未知',
+                    status: '未更新',
+                    description: '暂无。',
+                    requirements: [
+                        '暂无。  '
+                    ],
+                    tips: '暂无。'
+                }
+            },
+            math: {
+                title: '数学作业',
+                icon: 'fas fa-calculator',
+                color: '#3182ce',
+                content: {
+                    subject: '数学',
+                    teacher: '殷老师',
+                    deadline: '未知',
+                    status: '未更新',
+                    description: '暂无。',
+                    requirements: [
+                        '暂无。'
+                    ],
+                    tips: '暂无。'
+                }
+            },
+            english: {
+                title: '英语作业',
+                icon: 'fas fa-language',
+                color: '#38a169',
+                content: {
+                    subject: '英语',
+                    teacher: '黄老师',
+                    deadline: '25-12-18',
+                    status: '已更新',
+                    description: '背诵单词',
+                    requirements: [
+                        ' 背诵Unit3单词。'
+                    ],
+                    tips: '多听多说多读多写。'
+                }
+            },
+            physics: {
+                title: '物理作业',
+                icon: 'fas fa-atom',
+                color: '#d69e2e',
+                content: {
+                    subject: '物理',
+                    teacher: '孔老师',
+                    deadline: '2025-12-19',
+                    status: '已更新',
+                    description: '搜索问题答案。',
+                    requirements: [
+                        '四组各派代表回答问题。'
+                    ],
+                    tips: '个人代表整组。'
+                }
+            },
+            chemistry: {
+                title: '化学作业',
+                icon: 'fas fa-flask',
+                color: '#805ad5',
+                content: {
+                    subject: '化学',
+                    teacher: '林老师',
+                    deadline: '2025-12-19',
+                    status: '未更新',
+                    description: '待更新。',
+                    requirements: [
+                        '暂无'
+                    ],
+                    tips: '暂无。'
+                }
+            },
+            politics: {
+                title: '政治作业',
+                icon: 'fas fa-landmark',
+                color: '#dd6b20',
+                content: {
+                    subject: '政治',
+                    teacher: '未更新',
+                    deadline: '2025-12-19',
+                    status: '未更新',
+                    description: '小本12课。',
+                    requirements: [
+                        '小本12课。'
+                    ],
+                    tips: '暂无。'
+                }
+            },
+            other: {
+                title: '其他作业',
+                icon: 'fas fa-ellipsis-h',
+                color: '#718096',
+                content: {
+                    subject: '暂无',
+                    teacher: '暂无',
+                    deadline: '2025-12-19',
+                    status: '已更新',
+                    description: '暂无。',
+                    requirements: [
+                        '暂无'
+                    ],
+                    tips: '巴巴博一。'
+                }
+            }
+        };
+
         // ===== 页面导航功能 =====
         function init() {
             setupNavigation();
             setupMobileMenu();
+            setupHomeworkCards();
+            setupModal();
             hideLoading();
             updateBeijingTime();
             setInterval(updateBeijingTime, 1000);
             setupScrollEffects();
             setupAnimations();
-            detectUA(); // 初始化UA检测
+            detectUA();
         }
 
         function setupNavigation() {
@@ -822,6 +1292,8 @@
                     targetPage.style.display = 'block';
                     setTimeout(() => {
                         targetPage.classList.add('active');
+                        // 滚动到顶部
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                     }, 10);
                 }
             }, 250);
@@ -835,9 +1307,6 @@
             const icon = document.querySelector('#mobileToggle i');
             icon.classList.add('fa-bars');
             icon.classList.remove('fa-times');
-            
-            // 滚动到顶部
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function setupMobileMenu() {
@@ -859,6 +1328,97 @@
                     icon.classList.remove('fa-times');
                 });
             });
+        }
+
+        function setupHomeworkCards() {
+            const homeworkCards = document.querySelectorAll('.homework-card');
+            homeworkCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const subject = card.dataset.subject;
+                    showHomeworkModal(subject);
+                });
+            });
+        }
+
+        function setupModal() {
+            const modalOverlay = document.getElementById('homeworkModal');
+            const modalClose = document.getElementById('modalClose');
+            const modalButton = document.getElementById('modalButton');
+
+            modalClose.addEventListener('click', hideHomeworkModal);
+            modalButton.addEventListener('click', hideHomeworkModal);
+            
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    hideHomeworkModal();
+                }
+            });
+
+            // ESC键关闭弹窗
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    hideHomeworkModal();
+                }
+            });
+        }
+
+        function showHomeworkModal(subject) {
+            const data = homeworkData[subject];
+            if (!data) return;
+
+            const modalOverlay = document.getElementById('homeworkModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubject = document.getElementById('modalSubject');
+            const modalBody = document.getElementById('modalBody');
+
+            // 设置标题
+            modalTitle.querySelector('i').className = data.icon;
+            modalTitle.querySelector('i').style.color = data.color;
+            modalSubject.textContent = data.title;
+
+            // 设置内容
+            const content = data.content;
+            modalBody.innerHTML = `
+                <h4>作业描述</h4>
+                <p>${content.description}</p>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">科目</div>
+                        <div class="info-value">${content.subject}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">老师</div>
+                        <div class="info-value">${content.teacher}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"发布时间</div>
+                        <div class="info-value">${content.deadline}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">状态</div>
+                        <div class="info-value">${content.status}</div>
+                    </div>
+                </div>
+
+                <h4>作业详情</h4>
+                <ul>
+                    ${content.requirements.map(req => `<li>${req}</li>`).join('')}
+                </ul>
+
+                <h4>温馨提示</h4>
+                <p>${content.tips}</p>
+            `;
+
+            // 显示弹窗
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideHomeworkModal() {
+            const modalOverlay = document.getElementById('homeworkModal');
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         function hideLoading() {
@@ -918,7 +1478,7 @@
         // ===== 动画设置 =====
         function setupAnimations() {
             // 为功能卡片添加交错动画
-            const cards = document.querySelectorAll('.feature-card');
+            const cards = document.querySelectorAll('.feature-card, .homework-card');
             cards.forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
                 card.classList.add('fadeInUp');
@@ -934,11 +1494,17 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 const navMenu = document.getElementById('navMenu');
+                const modalOverlay = document.getElementById('homeworkModal');
+                
                 if (navMenu.classList.contains('active')) {
                     navMenu.classList.remove('active');
                     const icon = document.querySelector('#mobileToggle i');
                     icon.classList.add('fa-bars');
                     icon.classList.remove('fa-times');
+                }
+                
+                if (modalOverlay.classList.contains('active')) {
+                    hideHomeworkModal();
                 }
             }
         });
