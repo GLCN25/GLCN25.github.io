@@ -1863,9 +1863,7 @@
         </button>
     </div>
 
-    <audio id="bgMusic" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bgMusic" loop></audio>
 
     <div class="modal-overlay" id="homeworkModal">
         <div class="modal-content">
@@ -2341,16 +2339,18 @@
             }
         };
 
-        // ===== ？？？ - ？？？ =====
-        // ？？？
-        const PASSWORD_CONFIG = {
-            // ？？？
-            password: '2525CN',
-            // Locking times
-            maxAttempts: 3,
-            // minute
-            lockTime: 5
-        };
+        // ===== 音频文件配置 - 支持自动识别 =====
+        // 支持的音频格式：aac, mp3, flac, ogg, m4a
+        const AUDIO_FILES = [
+            '关键词.mp3',
+            '测试.aac',
+            '示例.flac',
+            '音乐.ogg',
+            '曲目.m4a'
+        ];
+
+        let CURRENT_AUDIO_FILE = '';
+        let CURRENT_LYRIC_FILE = '';
 
         class PasswordVerificationSystem {
             constructor() {
@@ -3082,7 +3082,8 @@
             const musicButton = document.getElementById('musicButton');
             const lyricDisplay = new LyricDisplay();
             
-            lyricDisplay.loadLyrics('歌词.lrc');
+            // 动态加载歌词文件（根据当前音频文件名）
+            lyricDisplay.loadLyrics(CURRENT_LYRIC_FILE);
             
             audio.addEventListener('timeupdate', () => {
                 if (!audio.paused) {
@@ -3103,8 +3104,10 @@
                 musicButton.classList.remove('lyrics-active');
             });
             
+            // 删除加载音频的时间显示，改为显示歌曲名
             audio.addEventListener('loadedmetadata', () => {
-                lyricDisplay.showStatus('success', `音乐已加载：${audio.duration.toFixed(1)}秒`);
+                const songName = CURRENT_AUDIO_FILE.split('.')[0]; // 获取文件名作为歌曲名
+                lyricDisplay.showStatus('success', `歌曲名：${songName}`);
             });
             
             audio.addEventListener('error', (e) => {
@@ -3112,10 +3115,53 @@
             });
         }
 
+        // ===== 自动识别音频文件功能 =====
+        function detectAudioFiles() {
+            // 自动扫描并选择存在的音频文件
+            for (let audioFile of AUDIO_FILES) {
+                const audioTest = new Audio();
+                audioTest.src = audioFile;
+                
+                // 检查文件是否存在
+                audioTest.addEventListener('canplaythrough', () => {
+                    if (!CURRENT_AUDIO_FILE) {
+                        setCurrentAudio(audioFile);
+                    }
+                });
+                
+                audioTest.addEventListener('error', () => {
+                    console.log(`文件不存在: ${audioFile}`);
+                });
+            }
+            
+            // 如果没有找到任何音频文件，使用默认值
+            if (!CURRENT_AUDIO_FILE) {
+                setCurrentAudio(AUDIO_FILES[0] || 'music.mp3');
+            }
+        }
+
+        function setCurrentAudio(filename) {
+            CURRENT_AUDIO_FILE = filename;
+            
+            // 提取文件名（不含扩展名）用于歌词文件
+            const fileNameWithoutExt = filename.substring(0, filename.lastIndexOf('.'));
+            CURRENT_LYRIC_FILE = `歌词库/${fileNameWithoutExt}.lrc`;
+            
+            // 设置音频源
+            const audio = document.getElementById('bgMusic');
+            audio.src = CURRENT_AUDIO_FILE;
+            
+            console.log(`当前音频: ${CURRENT_AUDIO_FILE}`);
+            console.log(`对应歌词: ${CURRENT_LYRIC_FILE}`);
+        }
+
         let particleNetwork = null;
         let passwordSystem = null; // 密码系统实例
         
         function initializeApp() {
+            // 初始化音频文件检测
+            detectAudioFiles();
+            
             // 初始化密码验证系统
             passwordSystem = new PasswordVerificationSystem();
             
