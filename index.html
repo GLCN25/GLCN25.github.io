@@ -110,6 +110,17 @@
             50% { transform: rotate(3deg) scale(1.05); }
         }
 
+        /* ===== 粒子网络背景 ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
         /* 加载动画 - 已验证安全页面的样式 */
         .loading {
             position: fixed;
@@ -1037,6 +1048,7 @@
         .ua-ios { color: var(--success); }
         .ua-android { color: var(--warning); }
         .ua-mobile { color: var(--accent); }
+        .ua-wechat { color: #07C160; } /* 微信绿色 */
 
         /* 音乐播放按钮样式 - 高级风格 */
         .music-player {
@@ -1178,6 +1190,9 @@
     </style>
 </head>
 <body>
+    <!-- 粒子网络背景 -->
+    <canvas id="particles-canvas"></canvas>
+
     <!-- 加载动画 - 已验证安全页面 -->
     <div class="loading" id="loading">
         <div class="loading-content">
@@ -1222,7 +1237,7 @@
                     </div>
                     <!-- STNStudio 发光UI -->
                     <div class="stn-studio-display">
-                        <i class="fas fa-star"></i> STNStudio
+                        STNStudio
                     </div>
                 </div>
             </section>
@@ -1365,6 +1380,120 @@
     </footer>
 
     <script>
+        // ===== 粒子网络背景 =====
+        class ParticleNetwork {
+            constructor() {
+                this.canvas = document.getElementById('particles-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.mouse = { x: 0, y: 0 };
+                this.animationId = null;
+                
+                this.init();
+                this.createParticles();
+                this.animate();
+                this.bindEvents();
+            }
+            
+            init() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                
+                window.addEventListener('resize', () => {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                });
+            }
+            
+            createParticles() {
+                const particleCount = Math.min(50, Math.floor((window.innerWidth * window.innerHeight) / 15000));
+                
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        radius: Math.random() * 2 + 1,
+                        opacity: Math.random() * 0.5 + 0.2
+                    });
+                }
+            }
+            
+            bindEvents() {
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                });
+                
+                window.addEventListener('touchmove', (e) => {
+                    if (e.touches.length > 0) {
+                        this.mouse.x = e.touches[0].clientX;
+                        this.mouse.y = e.touches[0].clientY;
+                    }
+                });
+            }
+            
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // 更新和绘制粒子
+                this.particles.forEach((particle, i) => {
+                    // 更新位置
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    // 边界检测
+                    if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -1;
+                    if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -1;
+                    
+                    // 鼠标吸附效果
+                    const dx = this.mouse.x - particle.x;
+                    const dy = this.mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        const force = (100 - distance) / 100;
+                        particle.x -= dx * force * 0.01;
+                        particle.y -= dy * force * 0.01;
+                    }
+                    
+                    // 绘制粒子
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = `rgba(102, 126, 234, ${particle.opacity})`;
+                    this.ctx.fill();
+                    
+                    // 绘制连接线
+                    this.particles.forEach((otherParticle, j) => {
+                        if (i !== j) {
+                            const dx2 = otherParticle.x - particle.x;
+                            const dy2 = otherParticle.y - particle.y;
+                            const distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                            
+                            if (distance2 < 80) {
+                                const opacity = (80 - distance2) / 80 * 0.3;
+                                this.ctx.beginPath();
+                                this.ctx.moveTo(particle.x, particle.y);
+                                this.ctx.lineTo(otherParticle.x, otherParticle.y);
+                                this.ctx.strokeStyle = `rgba(102, 126, 234, ${opacity})`;
+                                this.ctx.lineWidth = 1;
+                                this.ctx.stroke();
+                            }
+                        }
+                    });
+                });
+                
+                this.animationId = requestAnimationFrame(() => this.animate());
+            }
+            
+            destroy() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+            }
+        }
+
         // ===== UA检测功能 =====
         function detectUA() {
             const ua = navigator.userAgent.toLowerCase();
@@ -1376,8 +1505,14 @@
             let iconClass = '';
             let deviceClass = '';
             
+            // 检测微信浏览器
+            if (/micromessenger/.test(ua)) {
+                deviceType = '微信端';
+                iconClass = 'fa-comment-dots';
+                deviceClass = 'ua-wechat';
+            }
             // 检测iOS
-            if (/iphone|ipad|ipod/.test(ua)) {
+            else if (/iphone|ipad|ipod/.test(ua)) {
                 deviceType = 'IOS';
                 iconClass = 'fa-mobile-alt';
                 deviceClass = 'ua-ios';
@@ -1533,6 +1668,9 @@
 
         // ===== 页面导航功能 =====
         function init() {
+            // 初始化粒子网络
+            new ParticleNetwork();
+            
             setupNavigation();
             setupMobileMenu();
             setupHomeworkCards();
