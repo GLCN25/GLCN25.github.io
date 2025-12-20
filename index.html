@@ -527,7 +527,7 @@
                 box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
             }
             50% { 
-                box-shadow: 0 0 30px rgba(102, 126, 234, 0.6), 0 0 40px rgba(240, 147, 251, 0.3);
+                box-shadow: 0 0 30px rgba(72, 187, 120, 0.6), 0 0 40px rgba(240, 147, 251, 0.3);
             }
         }
 
@@ -1187,6 +1187,268 @@
                 transform: translateY(0);
             }
         }
+
+        /* ===== 歌词显示样式 - 高级玻璃拟态效果 ===== */
+        .lyrics-container {
+            position: relative;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: var(--transition-normal);
+            transform: translateY(0);
+        }
+
+        .lyrics-container:hover {
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .lyrics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .lyrics-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lyrics-title i {
+            color: var(--accent);
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+
+        .lyrics-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-size: 0.9rem;
+        }
+
+        .lyrics-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .lyrics-wrapper {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            mask-image: linear-gradient(
+                to bottom,
+                transparent 0%,
+                black 20%,
+                black 80%,
+                transparent 100%
+            );
+            -webkit-mask-image: linear-gradient(
+                to bottom,
+                transparent 0%,
+                black 20%,
+                black 80%,
+                transparent 100%
+            );
+        }
+
+        .lyrics-lines {
+            position: absolute;
+            width: 100%;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .lyrics-line {
+            padding: 1rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            transition: all 0.4s var(--transition-bounce);
+            cursor: pointer;
+            opacity: 0.7;
+            transform: scale(0.95);
+            user-select: none;
+        }
+
+        .lyrics-line:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--border-radius);
+        }
+
+        .lyrics-line.active {
+            color: var(--white);
+            font-size: 1.3rem;
+            font-weight: 600;
+            opacity: 1;
+            transform: scale(1);
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .lyrics-line.active::before {
+            content: '♪';
+            position: absolute;
+            left: 1rem;
+            color: var(--accent);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .lyrics-line.active::after {
+            content: '♪';
+            position: absolute;
+            right: 1rem;
+            color: var(--accent);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .lyrics-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+            overflow: hidden;
+        }
+
+        .lyrics-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .lyrics-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            gap: 0.5rem;
+        }
+
+        .lyrics-status i {
+            font-size: 1.1rem;
+        }
+
+        .lyrics-status.loading i {
+            animation: fa-spin 1s linear infinite;
+        }
+
+        .lyrics-status.error {
+            color: var(--danger);
+        }
+
+        .lyrics-status.success {
+            color: var(--success);
+        }
+
+        /* 歌词展开/收起动画 */
+        .lyrics-container.collapsed {
+            transform: translateY(calc(100% - 60px));
+            box-shadow: var(--shadow-md);
+            opacity: 0.9;
+        }
+
+        .lyrics-container.collapsed .lyrics-wrapper {
+            height: 0;
+            opacity: 0;
+        }
+
+        .lyrics-container.collapsed .lyrics-progress {
+            opacity: 0;
+        }
+
+        .lyrics-container.collapsed .lyrics-status {
+            padding: 0.5rem;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .lyrics-container {
+                margin: 1rem auto;
+                border-radius: var(--border-radius);
+            }
+
+            .lyrics-wrapper {
+                height: 250px;
+            }
+
+            .lyrics-line {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .lyrics-line.active {
+                font-size: 1.1rem;
+            }
+
+            .lyrics-line.active::before,
+            .lyrics-line.active::after {
+                display: none;
+            }
+
+            .lyrics-title {
+                font-size: 1.1rem;
+            }
+
+            .lyrics-toggle {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lyrics-wrapper {
+                height: 200px;
+            }
+
+            .lyrics-line {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .lyrics-line.active {
+                font-size: 1rem;
+            }
+        }
+
+        /* 音乐播放器与歌词联动 */
+        .music-button.lyrics-active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+
+        .music-button.lyrics-active:hover {
+            box-shadow: var(--shadow-xl), 0 0 30px rgba(102, 126, 234, 0.6);
+        }
     </style>
 </head>
 <body>
@@ -1241,6 +1503,35 @@
                     </div>
                 </div>
             </section>
+            
+            <!-- 歌词显示容器 -->
+            <div class="lyrics-container collapsed" id="lyricsContainer">
+                <div class="lyrics-header">
+                    <div class="lyrics-title">
+                        <i class="fas fa-align-center"></i>
+                        <span id="lyricsTitle">歌词加载中...</span>
+                    </div>
+                    <button class="lyrics-toggle" id="lyricsToggle">
+                        <i class="fas fa-chevron-up"></i>
+                        <span>展开</span>
+                    </button>
+                </div>
+                
+                <div class="lyrics-wrapper">
+                    <div class="lyrics-lines" id="lyricsLines">
+                        <!-- 动态生成的歌词行 -->
+                    </div>
+                </div>
+                
+                <div class="lyrics-progress">
+                    <div class="lyrics-progress-bar" id="lyricsProgressBar"></div>
+                </div>
+                
+                <div class="lyrics-status" id="lyricsStatus">
+                    <i class="fas fa-info-circle"></i>
+                    <span>点击音乐按钮开始播放</span>
+                </div>
+            </div>
         </div>
 
         <!-- 公告页 -->
@@ -1682,6 +1973,11 @@
             setupScrollEffects();
             setupAnimations();
             detectUA();
+            
+            // 歌词功能初始化
+            setTimeout(() => {
+                setupLyricsIntegration();
+            }, 1000);
         }
 
         function setupNavigation() {
@@ -1946,6 +2242,284 @@
             cards.forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
                 card.classList.add('fadeInUp');
+            });
+        }
+
+        // ===== 歌词解析器 =====
+        class LyricParser {
+            constructor() {
+                this.lyrics = [];
+                this.title = '';
+                this.artist = '';
+                this.album = '';
+            }
+            
+            parse(lrcContent) {
+                this.lyrics = [];
+                const lines = lrcContent.split('\n');
+                
+                // 解析元数据
+                lines.forEach(line => {
+                    const metaMatch = line.match(/^\[(ti|ar|al):(.+)\]$/i);
+                    if (metaMatch) {
+                        const [, key, value] = metaMatch;
+                        switch(key.toLowerCase()) {
+                            case 'ti': this.title = value; break;
+                            case 'ar': this.artist = value; break;
+                            case 'al': this.album = value; break;
+                        }
+                    }
+                });
+                
+                // 解析歌词
+                lines.forEach(line => {
+                    const timeMatches = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\]/g);
+                    const textMatch = line.match(/\].*$/);
+                    
+                    if (timeMatches && textMatch) {
+                        const text = textMatch[0].substring(1).trim();
+                        timeMatches.forEach(timeMatch => {
+                            const [, min, sec, ms] = timeMatch.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\]/);
+                            const time = parseInt(min) * 60 + parseInt(sec) + parseInt(ms) / (ms.length === 2 ? 100 : 1000);
+                            this.lyrics.push({ time, text });
+                        });
+                    }
+                });
+                
+                // 按时间排序
+                this.lyrics.sort((a, b) => a.time - b.time);
+                
+                return {
+                    lyrics: this.lyrics,
+                    title: this.title,
+                    artist: this.artist,
+                    album: this.album
+                };
+            }
+        }
+
+        // ===== 歌词显示控制器 =====
+        class LyricDisplay {
+            constructor() {
+                this.lyrics = [];
+                this.currentIndex = -1;
+                this.container = document.getElementById('lyricsContainer');
+                this.linesContainer = document.getElementById('lyricsLines');
+                this.progressBar = document.getElementById('lyricsProgressBar');
+                this.status = document.getElementById('lyricsStatus');
+                this.toggle = document.getElementById('lyricsToggle');
+                this.title = document.getElementById('lyricsTitle');
+                this.isCollapsed = true;
+                
+                this.setupToggle();
+                this.bindEvents();
+            }
+            
+            setupToggle() {
+                this.toggle.addEventListener('click', () => {
+                    this.isCollapsed = !this.isCollapsed;
+                    this.container.classList.toggle('collapsed');
+                    
+                    const icon = this.toggle.querySelector('i');
+                    const text = this.toggle.querySelector('span');
+                    
+                    if (this.isCollapsed) {
+                        icon.className = 'fas fa-chevron-up';
+                        text.textContent = '展开';
+                    } else {
+                        icon.className = 'fas fa-chevron-down';
+                        text.textContent = '收起';
+                    }
+                });
+            }
+            
+            bindEvents() {
+                // 点击歌词跳转
+                this.linesContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('lyrics-line')) {
+                        const index = parseInt(e.target.dataset.index);
+                        if (index >= 0 && this.lyrics[index]) {
+                            this.seekToTime(this.lyrics[index].time);
+                        }
+                    }
+                });
+            }
+            
+            loadLyrics(url) {
+                this.showStatus('loading', '正在加载歌词...');
+                
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) throw new Error('歌词文件加载失败');
+                        return response.text();
+                    })
+                    .then(lrcContent => {
+                        const parser = new LyricParser();
+                        const result = parser.parse(lrcContent);
+                        
+                        this.lyrics = result.lyrics;
+                        this.renderLyrics();
+                        this.showStatus('success', `歌词加载成功：${result.title || '未知歌曲'}`);
+                        
+                        if (result.title) {
+                            this.title.textContent = result.title;
+                        }
+                        
+                        // 自动展开歌词容器
+                        if (this.lyrics.length > 0) {
+                            setTimeout(() => {
+                                if (this.isCollapsed) {
+                                    this.toggle.click();
+                                }
+                            }, 500);
+                        }
+                    })
+                    .catch(error => {
+                        this.showStatus('error', '歌词加载失败：' + error.message);
+                        this.title.textContent = '暂无歌词';
+                        console.error('歌词加载错误:', error);
+                    });
+            }
+            
+            renderLyrics() {
+                this.linesContainer.innerHTML = '';
+                this.lyrics.forEach((lyric, index) => {
+                    const line = document.createElement('div');
+                    line.className = 'lyrics-line';
+                    line.textContent = lyric.text || '♪ ~ ♪';
+                    line.dataset.index = index;
+                    this.linesContainer.appendChild(line);
+                });
+            }
+            
+            update(currentTime) {
+                if (this.lyrics.length === 0) return;
+                
+                // 查找当前歌词索引
+                let newIndex = -1;
+                for (let i = this.lyrics.length - 1; i >= 0; i--) {
+                    if (currentTime >= this.lyrics[i].time) {
+                        newIndex = i;
+                        break;
+                    }
+                }
+                
+                // 更新高亮
+                if (newIndex !== this.currentIndex) {
+                    this.currentIndex = newIndex;
+                    this.highlightLine(newIndex);
+                }
+                
+                // 更新进度条
+                const totalDuration = this.lyrics[this.lyrics.length - 1].time;
+                const progress = (currentTime / totalDuration) * 100;
+                this.progressBar.style.width = Math.min(progress, 100) + '%';
+            }
+            
+            highlightLine(index) {
+                // 移除所有active类
+                document.querySelectorAll('.lyrics-line').forEach(line => {
+                    line.classList.remove('active');
+                });
+                
+                // 添加active类
+                if (index >= 0) {
+                    const activeLine = document.querySelector(`[data-index="${index}"]`);
+                    if (activeLine) {
+                        activeLine.classList.add('active');
+                        
+                        // 滚动到当前行
+                        const containerHeight = this.linesContainer.parentElement.clientHeight;
+                        const lineHeight = activeLine.offsetHeight;
+                        const offset = activeLine.offsetTop - (containerHeight / 2) + (lineHeight / 2);
+                        
+                        this.linesContainer.style.transform = `translateY(-${offset}px)`;
+                    }
+                }
+            }
+            
+            showStatus(type, message) {
+                this.status.className = 'lyrics-status ' + type;
+                this.status.querySelector('span').textContent = message;
+                
+                // 更新图标
+                const icon = this.status.querySelector('i');
+                switch(type) {
+                    case 'loading':
+                        icon.className = 'fas fa-spinner';
+                        break;
+                    case 'error':
+                        icon.className = 'fas fa-exclamation-circle';
+                        break;
+                    case 'success':
+                        icon.className = 'fas fa-check-circle';
+                        break;
+                    default:
+                        icon.className = 'fas fa-info-circle';
+                }
+            }
+            
+            seekToTime(time) {
+                // 触发音频跳转事件
+                const audio = document.getElementById('bgMusic');
+                if (audio && !isNaN(time)) {
+                    audio.currentTime = time;
+                    
+                    // 如果音频暂停，开始播放
+                    if (audio.paused) {
+                        document.getElementById('musicButton').click();
+                    }
+                }
+            }
+            
+            reset() {
+                this.currentIndex = -1;
+                this.highlightLine(-1);
+                this.progressBar.style.width = '0%';
+                this.linesContainer.style.transform = 'translateY(0)';
+            }
+        }
+
+        // ===== 集成到音乐播放器 =====
+        function setupLyricsIntegration() {
+            const audio = document.getElementById('bgMusic');
+            const musicButton = document.getElementById('musicButton');
+            const lyricDisplay = new LyricDisplay();
+            
+            // 加载歌词
+            lyricDisplay.loadLyrics('gc.lrc');
+            
+            // 监听音频时间更新
+            audio.addEventListener('timeupdate', () => {
+                if (!audio.paused) {
+                    lyricDisplay.update(audio.currentTime);
+                }
+            });
+            
+            // 监听音频播放状态
+            audio.addEventListener('play', () => {
+                musicButton.classList.add('lyrics-active');
+            });
+            
+            // 监听音频暂停
+            audio.addEventListener('pause', () => {
+                musicButton.classList.remove('lyrics-active');
+            });
+            
+            // 监听音频结束
+            audio.addEventListener('ended', () => {
+                lyricDisplay.reset();
+                musicButton.classList.remove('lyrics-active');
+            });
+            
+            // 监听音频加载
+            audio.addEventListener('loadedmetadata', () => {
+                lyricDisplay.showStatus('success', `音乐已加载：${audio.duration.toFixed(1)}秒`);
+            });
+            
+            // 监听音频错误
+            audio.addEventListener('error', (e) => {
+                lyricDisplay.showStatus('error', `音乐加载失败：${e.message}`);
             });
         }
 
