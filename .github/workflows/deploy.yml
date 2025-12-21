@@ -1,0 +1,30 @@
+name: Deploy with Password Protection
+
+on:
+  push:
+    branches: [ main ]   # 如果你的主分支叫 master，就改成 [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Inject password into code
+        env:
+          PAGE_PASSWORD: ${{ secrets.PAGE_PASSWORD }}
+        run: |
+          sed -i "s/process\.env\.PAGE_PASSWORD/'${PAGE_PASSWORD}'/g" index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
