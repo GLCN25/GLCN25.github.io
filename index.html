@@ -2927,15 +2927,104 @@
             });
         }
 
+        // ===== 服务器时间管理系统 =====
+        class ServerTimeManager {
+            constructor() {
+                this.serverTimeOffset = 0; // 服务器与本地时间差（毫秒）
+                this.lastSyncTime = 0;
+                this.isInitialized = false;
+            }
+            
+            // 从API获取北京时间
+            async fetchBeijingTime() {
+                try {
+                    // 使用多个API源确保可靠性
+                    const apis = [
+                        'https://worldtimeapi.org/api/timezone/Asia/Shanghai',
+                        'https://api.github.com'
+                    ];
+                    
+                    for (let api of apis) {
+                        try {
+                            const response = await fetch(api, { 
+                                method: 'GET',
+                                cache: 'no-cache'
+                            });
+                            
+                            if (api.includes('worldtimeapi')) {
+                                const data = await response.json();
+                                const serverTime = new Date(data.datetime).getTime();
+                                return serverTime;
+                            } else {
+                                // GitHub API 返回头包含Date
+                                const dateString = response.headers.get('Date');
+                                const serverTime = new Date(dateString).getTime();
+                                return serverTime;
+                            }
+                        } catch (e) {
+                            console.warn(`API ${api} 失败，尝试下一个`);
+                            continue;
+                        }
+                    }
+                    
+                    throw new Error('所有时间API均不可用');
+                } catch (error) {
+                    console.error('获取服务器时间失败:', error);
+                    return null;
+                }
+            }
+            
+            // 同步服务器时间
+            async syncTime() {
+                const startTime = Date.now();
+                const serverTime = await this.fetchBeijingTime();
+                const endTime = Date.now();
+                
+                if (serverTime) {
+                    // 计算网络延迟并补偿
+                    const networkDelay = (endTime - startTime) / 2;
+                    this.serverTimeOffset = (serverTime + networkDelay) - Date.now();
+                    this.lastSyncTime = Date.now();
+                    this.isInitialized = true;
+                    
+                    console.log(`时间同步成功！偏差: ${this.serverTimeOffset}ms`);
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            // 获取当前北京时间（基于服务器时间）
+            getBeijingTime() {
+                if (!this.isInitialized) {
+                    // 未初始化时返回本地时间作为后备
+                    return new Date();
+                }
+                
+                return new Date(Date.now() + this.serverTimeOffset);
+            }
+            
+            // 检查是否需要重新同步（每5分钟同步一次）
+            shouldResync() {
+                const timeSinceLastSync = Date.now() - this.lastSyncTime;
+                return timeSinceLastSync > 5 * 60 * 1000; // 5分钟
+            }
+        }
+        
+        // 创建全局时间管理器实例
+        const serverTimeManager = new ServerTimeManager();
+        
+        // 更新北京时间显示（使用服务器时间）
         function updateBeijingTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('zh-CN', { 
+            const beijingTime = serverTimeManager.getBeijingTime();
+            
+            const timeString = beijingTime.toLocaleTimeString('zh-CN', { 
                 hour12: false,
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit'
             });
-            const dateString = now.toLocaleDateString('zh-CN', { 
+            const dateString = beijingTime.toLocaleDateString('zh-CN', { 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric',
@@ -2948,6 +3037,13 @@
             if (timeElement && dateElement) {
                 timeElement.textContent = timeString;
                 dateElement.textContent = dateString;
+                
+                // 添加时间同步状态提示
+                if (!serverTimeManager.isInitialized) {
+                    timeElement.style.opacity = '0.6';
+                } else {
+                    timeElement.style.opacity = '1';
+                }
             }
         }
 
@@ -3239,9 +3335,13 @@
         let particleNetwork = null;
         let passwordSystem = null; // 密码系统实例
         
-        function initializeApp() {
+        async function initializeApp() {
             // 初始化密码验证系统
             passwordSystem = new PasswordVerificationSystem();
+            
+            // ===== 初始化服务器时间（关键修改）=====
+            // 在页面加载时立即同步时间
+            await serverTimeManager.syncTime();
             
             // 绑定所有功能
             setupNavigation();
@@ -3249,17 +3349,25 @@
             setupHomeworkCards();
             setupModal();
             setupMusicPlayer();
-            updateBeijingTime();
+            updateBeijingTime(); // 使用服务器时间更新
             setupScrollEffects();
             setupAnimations();
             setupLyricsIntegration();
             detectUA();
             
-            // 定时更新时间
+            // 定时更新时间（每秒更新）
             setInterval(updateBeijingTime, 1000);
             
             // 定时更新安全运行时间
             setInterval(updateUptime, 1000);
+            
+            // 定期检查是否需要重新同步服务器时间（每5分钟检查）
+            setInterval(async () => {
+                if (serverTimeManager.shouldResync()) {
+                    console.log('重新同步服务器时间...');
+                    await serverTimeManager.syncTime();
+                }
+            }, 5 * 60 * 1000); // 5分钟
             
             // 检查锁定状态
             if (passwordSystem.checkLockStatus()) {
