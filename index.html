@@ -302,21 +302,35 @@
         
         .mobile-toggle {
             display: none; 
-            background: rgba(255, 255, 255, 0.1); 
-            border: none;
+            background: rgba(255, 255, 255, 0.2); 
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white; 
             font-size: 1.5rem; 
             cursor: pointer;
-            padding: 0.5rem; 
-            min-width: 44px; 
+            padding: 0.5rem 1rem; 
+            min-width: 88px; 
             min-height: 44px;
-            border-radius: var(--border-radius-sm);
+            border-radius: var(--border-radius-lg); 
             transition: var(--transition-normal);
+            align-items: center; 
+            gap: 0.5rem; 
+            justify-content: center;
         }
         
         .mobile-toggle:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .mobile-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-toggle span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
         /* 确保页面切换时正确隐藏 */
@@ -1782,6 +1796,7 @@
             </ul>
             <button class="mobile-toggle" id="mobileToggle" aria-label="打开菜单">
                 <i class="fas fa-bars"></i>
+                <span>导航栏</span>
             </button>
         </div>
     </nav>
@@ -2883,7 +2898,7 @@
             // 2秒后显示验证成功（转两圈的时间）
             setTimeout(() => {
                 spinner.style.display = 'none';
-                loadingText.textContent = '已验证安全Version1.24';
+                loadingText.textContent = '已验证安全Version1.25';
                 loadingSubtext.textContent = '验证完成，正在加载界面...';
                 loadingCheck.style.display = 'block';
                 
