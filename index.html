@@ -1983,24 +1983,120 @@
             font-size: 1rem;
         }
 
+        /* 当前进行中版本样式 */
+        .current-version-item {
+            margin-bottom: var(--spacing-xl);
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 0.6s ease-out forwards;
+            animation-delay: 0.1s;
+        }
+
+        .current-version-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: calc(var(--spacing-lg) + var(--spacing-md));
+        }
+
+        .current-version-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .current-version-card::before {
+            content: '';
+            position: absolute;
+            left: calc(-2.5rem - var(--spacing-md));
+            top: 1.5rem;
+            width: 16px;
+            height: 16px;
+            background: var(--warning);
+            border: 3px solid var(--dark);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--warning);
+            animation: pulse 1.5s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .current-version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .current-version-date {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--warning);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .current-version-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--warning), var(--accent));
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-sm);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .current-version-text {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .current-version-text .fa-sync-alt {
+            color: var(--warning);
+            animation: fa-spin 2s linear infinite;
+        }
+
+        /* 响应式调整 */
         @media (max-width: 768px) {
-            .history-timeline {
-                padding-left: var(--spacing-md);
+            .current-version-card {
+                padding-left: calc(var(--spacing-lg) + var(--spacing-sm));
+                margin: 0 var(--spacing-sm);
             }
 
-            .history-item::before {
-                left: -2rem;
-                width: 14px;
-                height: 14px;
+            .current-version-card::before {
+                left: calc(-2rem - var(--spacing-sm));
             }
 
-            .history-header {
+            .current-version-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
 
-            .history-version {
+            .current-version-status {
                 align-self: flex-start;
+            }
+
+            .current-version-text {
+                font-size: 0.9rem;
             }
 
             .history-banner {
@@ -2018,26 +2114,16 @@
         }
 
         @media (max-width: 480px) {
-            .history-timeline {
-                padding-left: var(--spacing-sm);
+            .current-version-card {
+                padding-left: var(--spacing-lg);
             }
 
-            .history-item::before {
+            .current-version-card::before {
                 left: -1.8rem;
-                width: 12px;
-                height: 12px;
             }
 
-            .history-card {
-                padding: var(--spacing-md);
-            }
-
-            .history-date {
+            .current-version-date {
                 font-size: 1rem;
-            }
-
-            .history-change {
-                font-size: 0.85rem;
             }
         }
     </style>
@@ -2148,6 +2234,25 @@
                         <p class="history-banner-subtitle">记录每一次进步的足迹</p>
                     </div>
                     
+                    <!-- 当前进行中版本 -->
+                    <div class="current-version-item stagger-fade-in">
+                        <div class="current-version-card">
+                            <div class="current-version-header">
+                                <div class="current-version-date">
+                                    <i class="fas fa-sync-alt fa-spin"></i>
+                                    进行中
+                                </div>
+                                <div class="current-version-status">
+                                    Version 1.28
+                                </div>
+                            </div>
+                            <div class="current-version-text">
+                                <i class="fas fa-cog fa-spin"></i>
+                                尝试修改微信UA浏览问题
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="history-timeline" id="historyTimeline">
                         <!-- 更新历史内容将通过JavaScript动态渲染 -->
                     </div>
@@ -3278,7 +3383,7 @@
             
             setTimeout(() => {
                 spinner.style.display = 'none';
-                loadingText.textContent = '已验证安全Version1.26';
+                loadingText.textContent = '已验证安全Version1.27';
                 loadingSubtext.textContent = '验证完成，正在加载界面...';
                 loadingCheck.style.display = 'block';
                 
